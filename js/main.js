@@ -8,6 +8,3 @@ CONSIGNE
     - Afficher un champ de saisie qui affiche un calendrier lorsque l'on clique dessus
 */
 
-
-
-

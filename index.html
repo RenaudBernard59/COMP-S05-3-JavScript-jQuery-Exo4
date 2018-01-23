@@ -1,48 +1,161 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta type="content" charset="utf-8" />
-        <title>Exercice 4 jQuery</title>
-        <link rel="stylesheet" href="dist/easy-autocomplete.min.css">
-        <link rel="stylesheet" href="dist/easy-autocomplete.themes.min.css">
-        <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
-        <script type="text/javascript" src="dist/jquery.easy-autocomplete.min.js"></script>
-    </head>
-    <body>
-        <form action="post">
-        	<div>
-        		<input type="text" name="pays" id="countries">
-        	</div>
-			<div><input type="date" name="date"></div>
-			<div><input type="submit"></div>
-        </form>
-        
-        
-	<script>
-		
-/*=====================Pays=====================*/
+<head>
+  <meta type="content" charset="utf-8" />
+  <title>Exercice 4 jQuery</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="dist/easy-autocomplete.min.css">
+  <link rel="stylesheet" href="dist/easy-autocomplete.themes.min.css">
+  <link rel="stylesheet" href="dist/datepicker.css">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+  <script type="text/javascript" src="dist/jquery.easy-autocomplete.min.js"></script>
 
-var options = {
+  <script src="dist/datepicker.js"></script>
+</head>
+<body>
+  <main class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
+    <form action="post" class="form-control">
+      <input type="text" name="pays" id="countries">
+      <div class="docs-datepicker">
+          <div class="input-group">
+            <input type="text" class="form-control docs-date" name="date" placeholder="Pick a date">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default docs-datepicker-trigger" disabled>
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+          <div class="docs-datepicker-container"></div>
+        </div>
+      <input type="submit">
+    </form>
+  </main>
+<script>
+  
 
-  url: "resources/countries.json",
+  /*=====================Pays=====================*/
 
-  getValue: "name",
+  var options = {
 
-  list: {	
-    match: {
-      enabled: true
+    url: "resources/countries.json",
+
+    getValue: "name",
+
+    list: { 
+      match: {
+        enabled: true
+      }
+    },
+
+    theme: "square"
+  };
+
+  $("#countries").easyAutocomplete(options);
+
+
+  /*=====================Date=====================*/
+  $(function () {
+
+  'use strict';
+
+  var $date = $('.docs-date');
+  var $container = $('.docs-datepicker-container');
+  var $trigger = $('.docs-datepicker-trigger');
+  var options = {
+    show: function (e) {
+      console.log(e.type, e.namespace);
+    },
+    hide: function (e) {
+      console.log(e.type, e.namespace);
+    },
+    pick: function (e) {
+      console.log(e.type, e.namespace, e.view);
     }
-  },
+  };
 
-  theme: "square"
-};
+  $date.on({
+    'show.datepicker': function (e) {
+      console.log(e.type, e.namespace);
+    },
+    'hide.datepicker': function (e) {
+      console.log(e.type, e.namespace);
+    },
+    'pick.datepicker': function (e) {
+      console.log(e.type, e.namespace, e.view);
+    }
+  }).datepicker(options);
 
-$("#countries").easyAutocomplete(options);
+  $('.docs-options, .docs-toggles').on('change', function (e) {
+    var target = e.target;
+    var $target = $(target);
+    var name = $target.attr('name');
+    var value = target.type === 'checkbox' ? target.checked : $target.val();
+    var $optionContainer;
+
+    switch (name) {
+      case 'container':
+        if (value) {
+          value = $container;
+          $container.show();
+        } else {
+          $container.hide();
+        }
+
+        break;
+
+      case 'trigger':
+        if (value) {
+          value = $trigger;
+          $trigger.prop('disabled', false);
+        } else {
+          $trigger.prop('disabled', true);
+        }
+
+        break;
+
+      case 'inline':
+        $optionContainer = $('input[name="container"]');
+
+        if (!$optionContainer.prop('checked')) {
+          $optionContainer.click();
+        }
+
+        break;
+
+      case 'language':
+        $('input[name="format"]').val($.fn.datepicker.languages[value].format);
+        break;
+    }
+
+    options[name] = value;
+    $date.datepicker('reset').datepicker('destroy').datepicker(options);
+  });
+
+  $('.docs-actions').on('click', 'button', function (e) {
+    var data = $(this).data();
+    var args = data.arguments || [];
+    var result;
+
+    e.stopPropagation();
+
+    if (data.method) {
+      if (data.source) {
+        $date.datepicker(data.method, $(data.source).val());
+      } else {
+        result = $date.datepicker(data.method, args[0], args[1], args[2]);
+
+        if (result && data.target) {
+          $(data.target).val(result);
+        }
+      }
+    }
+  });
+
+  $('[data-toggle="datepicker"]').datepicker();
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 
-/*=====================Date=====================*/
-
-
-	</script>
-    </body>
+</script>
+</body>
 </html>
