@@ -3,8 +3,10 @@
     <head>
         <meta type="content" charset="utf-8" />
         <title>Exercice 4 jQuery</title>
-        <link rel="stylesheet" href="easy-autocomplete.min.css">
-        <link rel="stylesheet" href="easy-autocomplete.themes.min.css">
+        <link rel="stylesheet" href="dist/easy-autocomplete.min.css">
+        <link rel="stylesheet" href="dist/easy-autocomplete.themes.min.css">
+        <script type="text/javascript" src="lib/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="dist/jquery.easy-autocomplete.min.js"></script>
     </head>
     <body>
         <form action="post">
@@ -16,8 +18,31 @@
         </form>
         
         
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.easy-autocomplete.min.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+	<script>
+		
+/*=====================Pays=====================*/
+
+var options = {
+
+  url: "resources/countries.json",
+
+  getValue: "name",
+
+  list: {	
+    match: {
+      enabled: true
+    }
+  },
+
+  theme: "square"
+};
+
+$("#countries").easyAutocomplete(options);
+
+
+/*=====================Date=====================*/
+
+
+	</script>
     </body>
 </html>

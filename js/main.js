@@ -8,27 +8,6 @@ CONSIGNE
     - Afficher un champ de saisie qui affiche un calendrier lorsque l'on clique dessus
 */
 
-/*=====================Pays=====================*/
-
-var options = {
-
-  url: "resources/countries.json",
-
-  getValue: "name",
-
-  list: {	
-    match: {
-      enabled: true
-    }
-  },
-
-  theme: "square"
-};
-
-$("#countries").easyAutocomplete(options);
-
-
-/*=====================Date=====================*/
 
 
 
